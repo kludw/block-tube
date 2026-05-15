@@ -1,0 +1,48 @@
+{
+  "manifest_version": 3,
+  "name": "chrome - yt - ext",
+  "version": "1.0.0",
+  "description": "YouTube helper extension",
+  "minimum_chrome_version": "111",
+  "icons": {
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_icon": "icons/icon128.png",
+    "default_popup": "popup/popup.html",
+    "default_title": "Remove YouTube Shorts",
+    "theme_icons": [
+      {
+        "light": "icons/icon128-light.png",
+        "dark": "icons/icon128.png",
+        "size": 128
+      }
+    ]
+  },
+  "permissions": ["storage"],
+  "host_permissions": ["*://*.youtube.com/*"],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*.youtube.com/*"],
+      "js": ["main-world/seed.js", "main-world/inject.js"],
+      "run_at": "document_start",
+      "world": "MAIN",
+      "all_frames": true
+    },
+    {
+      "matches": ["*://*.youtube.com/*"],
+      "js": ["main-world/bridge.js"],
+      "run_at": "document_start",
+      "all_frames": true
+    },
+    {
+      "matches": ["*://*.youtube.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_end"
+    }
+  ]
+}
