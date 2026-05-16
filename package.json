@@ -1,9 +1,9 @@
 {
-  "name": "chrome-yt-ext",
-  "version": "1.1.0",
+  "name": "block-tube",
+  "version": "1.2.0",
   "private": true,
   "type": "module",
-  "description": "Modular Chrome extension for YouTube. Each feature is a self-contained module.",
+  "description": "Helper extension for YouTube: block channels and shorts",
   "scripts": {
     "pretty": "prettier --write .",
     "build": "node build.mjs",

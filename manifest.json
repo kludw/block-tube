@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
-  "name": "chrome - yt - ext",
-  "version": "1.1.0",
+  "name": "BlockTube",
+  "version": "1.2.0",
   "description": "YouTube helper extension",
   "minimum_chrome_version": "111",
   "icons": {
