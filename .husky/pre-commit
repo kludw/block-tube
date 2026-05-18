@@ -6,3 +6,6 @@ npm run typecheck
 npm run pretty
 
 git add .
+
+npm run test:unit
+npm run test:e2e

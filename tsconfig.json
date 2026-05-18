@@ -18,5 +18,11 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src", "build.mts"]
+  "include": [
+    "src",
+    "build.mts",
+    "tests",
+    "vitest.config.ts",
+    "playwright.config.ts"
+  ]
 }

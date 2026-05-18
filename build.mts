@@ -3,26 +3,28 @@ import { rmSync, mkdirSync, copyFileSync } from "node:fs";
 
 const OUT = "dist";
 const watch = process.argv.includes("--watch");
+const dev = watch || process.argv.includes("--dev");
 
 function copyStaticAssets() {
   rmSync(OUT, { recursive: true, force: true });
   mkdirSync(`${OUT}/popup`, { recursive: true });
   mkdirSync(`${OUT}/icons`, { recursive: true });
-  mkdirSync(`${OUT}/main-world`, { recursive: true });
   copyFileSync("manifest.json", `${OUT}/manifest.json`);
   copyFileSync("icons/icon128.png", `${OUT}/icons/icon128.png`);
   copyFileSync("icons/icon128-light.png", `${OUT}/icons/icon128-light.png`);
+  copyFileSync("icons/cog.svg", `${OUT}/icons/cog.svg`);
   copyFileSync("src/popup/popup.html", `${OUT}/popup/popup.html`);
   copyFileSync("src/popup/popup.css", `${OUT}/popup/popup.css`);
-  copyFileSync("src/main-world/seed.js", `${OUT}/main-world/seed.js`);
-  copyFileSync("src/main-world/inject.js", `${OUT}/main-world/inject.js`);
 }
 
 const shared = {
   bundle: true,
   target: "chrome92" as const,
   logLevel: "info" as const,
-  sourcemap: "inline" as const,
+  sourcemap: dev ? ("inline" as const) : false,
+  minify: !dev,
+  drop: dev ? [] : (["console", "debugger"] as ("console" | "debugger")[]),
+  legalComments: "none" as const,
 };
 
 const entries = [
@@ -47,6 +49,18 @@ const entries = [
   {
     entryPoints: ["src/main-world/bridge.ts"],
     outfile: `${OUT}/main-world/bridge.js`,
+    format: "iife" as const,
+    ...shared,
+  },
+  {
+    entryPoints: ["src/main-world/seed.ts"],
+    outfile: `${OUT}/main-world/seed.js`,
+    format: "iife" as const,
+    ...shared,
+  },
+  {
+    entryPoints: ["src/main-world/inject.ts"],
+    outfile: `${OUT}/main-world/inject.js`,
     format: "iife" as const,
     ...shared,
   },
