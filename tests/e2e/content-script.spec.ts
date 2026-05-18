@@ -7,6 +7,7 @@ const YT_STUB = `<!doctype html>
 test.describe("content script", () => {
   test("Shorts Blocker redirects /shorts away from the page", async ({
     context,
+    serviceWorker: _sw,
   }) => {
     await context.route("https://www.youtube.com/**", async (route) => {
       await route.fulfill({

@@ -3,6 +3,7 @@ import {
   compilePattern,
   type BlockedChannel,
 } from "@/modules/channels/blocked-channels";
+import { getAuthState } from "@/shared/auth";
 
 type CompiledPattern = [string, string];
 
@@ -37,6 +38,11 @@ async function getBlockedChannelsRaw(): Promise<BlockedChannel[]> {
 }
 
 async function pushCurrentState(): Promise<void> {
+  const auth = await getAuthState();
+  if (!auth.signedIn) {
+    postPatterns(undefined);
+    return;
+  }
   const enabled = await getChannelsModuleEnabled();
   if (!enabled) {
     postPatterns(undefined);
@@ -82,7 +88,11 @@ window.addEventListener(
 
 chrome.storage.onChanged.addListener((changes, area) => {
   if (area !== "local") return;
-  if (changes["blockedChannels"] || changes["moduleSettings"]) {
+  if (
+    changes["blockedChannels"] ||
+    changes["moduleSettings"] ||
+    changes["authState"]
+  ) {
     void pushCurrentState();
   }
 });

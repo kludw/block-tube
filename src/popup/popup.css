@@ -213,6 +213,88 @@ body {
   transform: translateX(1.1875rem);
 }
 
+/* Auth gate */
+.auth-gate {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+
+.auth-gate[hidden] {
+  display: none;
+}
+
+.auth-message {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.auth-signin {
+  padding: 0.55rem 1rem;
+  border: none;
+  border-radius: 6px;
+  background-color: var(--accent);
+  color: #fff;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.auth-signin:hover:not(:disabled) {
+  background-color: var(--accent-hover);
+}
+
+.auth-signin:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.auth-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.75rem;
+}
+
+.auth-footer[hidden] {
+  display: none;
+}
+
+.auth-email {
+  color: var(--text-dim);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.auth-signout {
+  flex: none;
+  padding: 0.3rem 0.625rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-muted);
+  font-family: inherit;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition:
+    color 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.auth-signout:hover:not(:disabled) {
+  color: var(--text);
+  background-color: var(--surface-hover);
+}
+
 /* Modal */
 .modal-overlay {
   position: fixed;

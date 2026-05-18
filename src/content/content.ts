@@ -1,7 +1,11 @@
 import { modules } from "@/modules/registry";
 import { getSettings, onSettingsChanged } from "@/shared/settings";
+import { getAuthState, onAuthChanged } from "@/shared/auth";
 
 async function applyEnabledModules(): Promise<void> {
+  const auth = await getAuthState();
+  if (!auth.signedIn) return;
+
   const settings = await getSettings();
 
   for (const mod of modules) {
@@ -21,3 +25,4 @@ async function applyEnabledModules(): Promise<void> {
 void applyEnabledModules();
 
 onSettingsChanged(() => window.location.reload());
+onAuthChanged(() => window.location.reload());

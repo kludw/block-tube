@@ -37,6 +37,13 @@ export const test = base.extend<ExtensionFixtures>({
   serviceWorker: async ({ context }, use) => {
     let [sw] = context.serviceWorkers();
     if (!sw) sw = await context.waitForEvent("serviceworker");
+    // Seed signed-in auth so the existing flows aren't gated. Tests that need
+    // signed-out state can overwrite this via `chrome.storage.local.set`.
+    await sw.evaluate(async () => {
+      await chrome.storage.local.set({
+        authState: { signedIn: true, email: "test@example.com" },
+      });
+    });
     await use(sw);
   },
 

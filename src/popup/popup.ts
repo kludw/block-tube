@@ -5,6 +5,13 @@ import {
   type SettingsMap,
 } from "@/shared/settings";
 import type { ExtensionModule } from "@/modules/types";
+import {
+  getAuthState,
+  onAuthChanged,
+  signIn,
+  signOut,
+  type AuthState,
+} from "@/shared/auth";
 
 const listEl = document.getElementById("module-list") as HTMLElement;
 const overlayEl = document.getElementById("modal-overlay") as HTMLElement;
@@ -13,6 +20,11 @@ const modalBodyEl = document.getElementById("modal-body") as HTMLElement;
 const modalCloseEl = document.getElementById(
   "modal-close",
 ) as HTMLButtonElement;
+const authGateEl = document.getElementById("auth-gate") as HTMLElement;
+const authFooterEl = document.getElementById("auth-footer") as HTMLElement;
+const authEmailEl = document.getElementById("auth-email") as HTMLElement;
+const signInBtn = document.getElementById("auth-signin") as HTMLButtonElement;
+const signOutBtn = document.getElementById("auth-signout") as HTMLButtonElement;
 
 function openModal(mod: ExtensionModule): void {
   if (!mod.renderSettings) return;
@@ -118,10 +130,41 @@ function wireLinks(): void {
   });
 }
 
-async function init(): Promise<void> {
+async function renderModules(): Promise<void> {
   const settings = await getSettings();
   listEl.replaceChildren(...modules.map((mod) => renderModule(mod, settings)));
   wireLinks();
 }
 
-void init();
+function applyAuthState(state: AuthState): void {
+  const signedIn = state.signedIn;
+  authGateEl.hidden = signedIn;
+  listEl.hidden = !signedIn;
+  authFooterEl.hidden = !signedIn;
+  if (signedIn) {
+    authEmailEl.textContent = state.email ?? "";
+    void renderModules();
+  } else {
+    listEl.replaceChildren();
+  }
+}
+
+signInBtn.addEventListener("click", () => {
+  signInBtn.disabled = true;
+  signIn()
+    .then(applyAuthState)
+    .finally(() => {
+      signInBtn.disabled = false;
+    });
+});
+
+signOutBtn.addEventListener("click", () => {
+  signOutBtn.disabled = true;
+  void signOut().finally(() => {
+    signOutBtn.disabled = false;
+  });
+});
+
+onAuthChanged(applyAuthState);
+
+void getAuthState().then(applyAuthState);

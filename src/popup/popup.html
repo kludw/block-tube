@@ -19,7 +19,21 @@
         <h1 class="header-title">BlockTube</h1>
       </header>
 
-      <div class="module-list" id="module-list"></div>
+      <section class="auth-gate" id="auth-gate" hidden>
+        <p class="auth-message">Sign in with Google to use BlockTube.</p>
+        <button class="auth-signin" id="auth-signin" type="button">
+          Sign in with Google
+        </button>
+      </section>
+
+      <div class="module-list" id="module-list" hidden></div>
+
+      <footer class="auth-footer" id="auth-footer" hidden>
+        <span class="auth-email" id="auth-email"></span>
+        <button class="auth-signout" id="auth-signout" type="button">
+          Sign out
+        </button>
+      </footer>
     </main>
 
     <div class="modal-overlay" id="modal-overlay" hidden>

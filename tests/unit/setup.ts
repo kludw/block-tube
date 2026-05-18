@@ -20,6 +20,26 @@ const mockStorage: MockStorage = {
   },
 };
 
+interface IdentityMock {
+  nextToken: string | undefined;
+  nextError: string | undefined;
+  removed: string[];
+  reset(): void;
+}
+
+const mockIdentity: IdentityMock = {
+  nextToken: "test-token",
+  nextError: undefined,
+  removed: [],
+  reset() {
+    this.nextToken = "test-token";
+    this.nextError = undefined;
+    this.removed = [];
+  },
+};
+
+let lastError: { message: string } | undefined;
+
 const chromeMock = {
   storage: {
     local: {
@@ -54,17 +74,57 @@ const chromeMock = {
       }),
     },
   },
+  identity: {
+    getAuthToken: vi.fn(
+      (
+        _details: { interactive: boolean },
+        cb: (token: string | undefined) => void,
+      ) => {
+        if (mockIdentity.nextError) {
+          lastError = { message: mockIdentity.nextError };
+          cb(undefined);
+          lastError = undefined;
+          return;
+        }
+        cb(mockIdentity.nextToken);
+      },
+    ),
+    removeCachedAuthToken: vi.fn(
+      (details: { token: string }, cb: () => void) => {
+        mockIdentity.removed.push(details.token);
+        cb();
+      },
+    ),
+  },
+  runtime: {
+    get lastError(): { message: string } | undefined {
+      return lastError;
+    },
+  },
 };
 
 declare global {
   // eslint-disable-next-line no-var
   var __mockStorage: MockStorage;
+  // eslint-disable-next-line no-var
+  var __mockIdentity: IdentityMock;
 }
 
 (globalThis as unknown as { chrome: typeof chromeMock }).chrome = chromeMock;
 globalThis.__mockStorage = mockStorage;
+globalThis.__mockIdentity = mockIdentity;
+
+// userinfo lookup is best-effort; stub it so signIn() doesn't try real network.
+globalThis.fetch = vi.fn(
+  async () =>
+    new Response(JSON.stringify({ email: "test@example.com" }), {
+      status: 200,
+      headers: { "content-type": "application/json" },
+    }),
+) as typeof fetch;
 
 beforeEach(() => {
   mockStorage.reset();
+  mockIdentity.reset();
   vi.clearAllMocks();
 });
