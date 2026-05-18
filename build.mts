@@ -20,34 +20,34 @@ function copyStaticAssets() {
 
 const shared = {
   bundle: true,
-  target: "chrome92",
-  logLevel: "info",
-  sourcemap: "inline",
+  target: "chrome92" as const,
+  logLevel: "info" as const,
+  sourcemap: "inline" as const,
 };
 
 const entries = [
   {
     entryPoints: ["src/background/background.ts"],
     outfile: `${OUT}/background.js`,
-    format: "esm",
+    format: "esm" as const,
     ...shared,
   },
   {
     entryPoints: ["src/content/content.ts"],
     outfile: `${OUT}/content.js`,
-    format: "iife",
+    format: "iife" as const,
     ...shared,
   },
   {
     entryPoints: ["src/popup/popup.ts"],
     outfile: `${OUT}/popup/popup.js`,
-    format: "iife",
+    format: "iife" as const,
     ...shared,
   },
   {
     entryPoints: ["src/main-world/bridge.ts"],
     outfile: `${OUT}/main-world/bridge.js`,
-    format: "iife",
+    format: "iife" as const,
     ...shared,
   },
 ];

@@ -1,5 +1,5 @@
-import { modules } from "../modules/registry";
-import { getSettings, onSettingsChanged } from "../shared/settings";
+import { modules } from "@/modules/registry";
+import { getSettings, onSettingsChanged } from "@/shared/settings";
 
 async function applyEnabledModules(): Promise<void> {
   const settings = await getSettings();

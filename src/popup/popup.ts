@@ -1,10 +1,10 @@
-import { modules } from "../modules/registry";
+import { modules } from "@/modules/registry";
 import {
   getSettings,
   updateModuleState,
   type SettingsMap,
-} from "../shared/settings";
-import type { ExtensionModule } from "../modules/types";
+} from "@/shared/settings";
+import type { ExtensionModule } from "@/modules/types";
 
 const COG_SVG =
   '<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">' +

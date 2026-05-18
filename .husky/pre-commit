@@ -1,0 +1,8 @@
+#!/bin/bash
+
+echo "Running pre-commit scripts..."
+
+npm run typecheck
+npm run pretty
+
+git add .

@@ -1,5 +1,5 @@
-import type { ExtensionModule } from "../types";
-import { renderChannelSettings } from "./channels.settings";
+import type { ExtensionModule } from "@/modules/types";
+import { renderChannelSettings } from "@/modules/channels/channels.settings";
 
 export const channelsModule: ExtensionModule = {
   id: "channels",

@@ -4,7 +4,7 @@ import {
   onBlockedChannelsChanged,
   removeBlockedChannel,
   type BlockedChannel,
-} from "./blocked-channels";
+} from "@/modules/channels/blocked-channels";
 
 export async function renderChannelSettings(
   container: HTMLElement,

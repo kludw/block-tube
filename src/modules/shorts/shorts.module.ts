@@ -1,4 +1,4 @@
-import type { ExtensionModule } from "../types";
+import type { ExtensionModule } from "@/modules/types";
 
 const SHORTS_CSS = `
   .ytd-reel-shelf-renderer { display: none !important; }

@@ -1,7 +1,7 @@
 import {
   addBlockedChannel,
   type BlockedChannel,
-} from "../modules/channels/blocked-channels";
+} from "@/modules/channels/blocked-channels";
 
 const UNICODE_BOUNDARY =
   "[ \\n\\r\\t!@#$%^&*()_\\-=+\\[\\]\\\\\\|;:'\",\\.\\/<>\\?`~:]+";

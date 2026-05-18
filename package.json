@@ -5,6 +5,7 @@
   "type": "module",
   "description": "Helper extension for YouTube: block channels and shorts",
   "scripts": {
+    "postinstall": "husky",
     "pretty": "prettier --write .",
     "build": "node build.mjs",
     "watch": "node build.mjs --watch",
@@ -12,7 +13,9 @@
   },
   "devDependencies": {
     "@types/chrome": "^0.0.268",
+    "@types/node": "^25.9.0",
     "esbuild": "^0.21.5",
+    "husky": "^9.1.7",
     "prettier": "^3.8.3",
     "typescript": "^5.4.5"
   }

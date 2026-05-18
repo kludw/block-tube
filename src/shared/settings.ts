@@ -1,5 +1,5 @@
-import { modules } from "../modules/registry";
-import type { ExtensionModule, ModuleState } from "../modules/types";
+import { modules } from "@/modules/registry";
+import type { ExtensionModule, ModuleState } from "@/modules/types";
 
 export type SettingsMap = Record<string, ModuleState>;
 

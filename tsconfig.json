@@ -2,9 +2,9 @@
   "compilerOptions": {
     "target": "ES2020",
     "module": "ESNext",
+    "types": ["node", "chrome"],
     "moduleResolution": "Bundler",
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
-    "types": ["chrome"],
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
@@ -13,7 +13,10 @@
     "skipLibCheck": true,
     "erasableSyntaxOnly": true,
     "forceConsistentCasingInFileNames": true,
-    "noEmit": true
+    "noEmit": true,
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
-  "include": ["src", "build.mjs"]
+  "include": ["src", "build.mts"]
 }

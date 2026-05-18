@@ -644,7 +644,7 @@
             ) {
               badges.push("artist");
             } else if (
-            /* Videos */
+              /* Videos */
               br.metadataBadgeRenderer.style === "BADGE_STYLE_TYPE_LIVE_NOW"
             ) {
               badges.push("live");
