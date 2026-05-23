@@ -1,0 +1,32 @@
+{
+  "name": "block-tube",
+  "version": "1.6.0",
+  "private": true,
+  "type": "module",
+  "description": "Helper extension for YouTube: block channels and shorts",
+  "scripts": {
+    "postinstall": "husky",
+    "pretty": "prettier --write .",
+    "build": "npx tsx build.mts",
+    "build:release": "npx tsx build.mts --release",
+    "watch": "npx tsx build.mts --watch",
+    "typecheck": "tsc --noEmit",
+    "test": "npm run test:unit && npm run test:e2e",
+    "test:unit": "vitest run",
+    "test:unit:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:e2e": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.60.0",
+    "@types/chrome": "^0.0.268",
+    "@types/node": "^25.9.0",
+    "@vitest/coverage-v8": "^4.1.6",
+    "esbuild": "^0.28.0",
+    "happy-dom": "^20.9.0",
+    "husky": "^9.1.7",
+    "prettier": "^3.8.3",
+    "typescript": "^5.4.5",
+    "vitest": "^4.1.6"
+  }
+}

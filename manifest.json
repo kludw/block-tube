@@ -1,0 +1,57 @@
+{
+  "manifest_version": 3,
+  "name": "BlockTube",
+  "version": "1.6.0",
+  "description": "YouTube helper extension",
+  "minimum_chrome_version": "111",
+  "icons": {
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_icon": "icons/icon128.png",
+    "default_popup": "popup/popup.html",
+    "default_title": "Remove YouTube Shorts",
+    "theme_icons": [
+      {
+        "light": "icons/icon128-light.png",
+        "dark": "icons/icon128.png",
+        "size": 128
+      }
+    ]
+  },
+  "permissions": ["storage", "identity"],
+  "host_permissions": ["*://*.youtube.com/*"],
+  "oauth2": {
+    "client_id": "121299791017-gbcpjd31u4e470cu3cq39nel490cc4kq.apps.googleusercontent.com",
+    "scopes": ["openid", "email"]
+  },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*.youtube.com/*"],
+      "js": ["main-world/seed.js", "main-world/inject.js"],
+      "run_at": "document_start",
+      "world": "MAIN",
+      "all_frames": true
+    },
+    {
+      "matches": ["*://*.youtube.com/*"],
+      "js": ["main-world/bridge.js"],
+      "run_at": "document_start",
+      "all_frames": true
+    },
+    {
+      "matches": ["*://*.youtube.com/*"],
+      "js": ["redirect.js"],
+      "run_at": "document_start"
+    },
+    {
+      "matches": ["*://*.youtube.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_end"
+    }
+  ]
+}
