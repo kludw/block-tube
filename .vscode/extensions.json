@@ -1,0 +1,16 @@
+{
+  "recommendations": [
+    "streetsidesoftware.code-spell-checker",
+    "upstash.context7-mcp",
+    "wallabyjs.wallaby-vscode",
+    "wallabyjs.quokka-vscode",
+    "yoavbls.pretty-ts-errors",
+    "esbenp.prettier-vscode",
+    "ms-playwright.playwright",
+    "davidanson.vscode-markdownlint",
+    "yzhang.markdown-all-in-one",
+    "wix.vscode-import-cost",
+    "github.vscode-github-actions",
+    "wallabyjs.console-ninja"
+  ]
+}

@@ -105,7 +105,7 @@ describe("getBlockedChannels", () => {
   });
 
   it("returns the stored list", async () => {
-    globalThis.__mockStorage.data["blockedChannels"] = [
+    globalThis.__mockStorage.sync.data["blockedChannels"] = [
       { pattern: "foo", addedAt: 1 },
     ];
     expect(await getBlockedChannels()).toEqual([
@@ -114,7 +114,7 @@ describe("getBlockedChannels", () => {
   });
 
   it("returns [] when the stored value is not an array", async () => {
-    globalThis.__mockStorage.data["blockedChannels"] = "not an array";
+    globalThis.__mockStorage.sync.data["blockedChannels"] = "not an array";
     expect(await getBlockedChannels()).toEqual([]);
   });
 });
@@ -185,14 +185,14 @@ describe("onBlockedChannelsChanged", () => {
   it("ignores unrelated storage changes", async () => {
     const cb = vi.fn();
     onBlockedChannelsChanged(cb);
-    await chrome.storage.local.set({ otherKey: "value" });
+    await chrome.storage.sync.set({ otherKey: "value" });
     expect(cb).not.toHaveBeenCalled();
   });
 
   it("returns [] when the new value is not an array", async () => {
     const cb = vi.fn();
     onBlockedChannelsChanged(cb);
-    await chrome.storage.local.set({ blockedChannels: null });
+    await chrome.storage.sync.set({ blockedChannels: null });
     expect(cb).toHaveBeenCalledWith([]);
   });
 });

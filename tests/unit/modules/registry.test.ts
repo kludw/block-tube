@@ -2,9 +2,11 @@ import { describe, it, expect } from "vitest";
 import { modules } from "@/modules/registry";
 
 describe("modules registry", () => {
-  it("registers the shorts and channels modules", () => {
+  it("registers the shorts, channels and playables modules", () => {
     const ids = modules.map((m) => m.id);
-    expect(ids).toEqual(expect.arrayContaining(["shorts", "channels"]));
+    expect(ids).toEqual(
+      expect.arrayContaining(["shorts", "channels", "playables"]),
+    );
   });
 
   it("every module declares the required fields", () => {

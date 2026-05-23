@@ -72,6 +72,8 @@ test.describe("auth gate", () => {
     await serviceWorker.evaluate(async () => {
       await chrome.storage.local.set({
         authState: { signedIn: false },
+      });
+      await chrome.storage.sync.set({
         moduleSettings: {
           shorts: { enabled: true },
           channels: { enabled: true },

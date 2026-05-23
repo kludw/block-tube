@@ -46,6 +46,11 @@
     },
     {
       "matches": ["*://*.youtube.com/*"],
+      "js": ["redirect.js"],
+      "run_at": "document_start"
+    },
+    {
+      "matches": ["*://*.youtube.com/*"],
       "js": ["content.js"],
       "run_at": "document_end"
     }

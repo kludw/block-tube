@@ -55,7 +55,7 @@ export function isChannelBlocked(
 }
 
 export async function getBlockedChannels(): Promise<BlockedChannel[]> {
-  const stored = await chrome.storage.local.get(STORAGE_KEY);
+  const stored = await chrome.storage.sync.get(STORAGE_KEY);
   const list = stored[STORAGE_KEY];
   return Array.isArray(list) ? (list as BlockedChannel[]) : [];
 }
@@ -70,21 +70,21 @@ export async function addBlockedChannel(input: {
   if (list.some((c) => c.pattern.trim() === pattern)) return;
 
   list.push({ pattern, addedAt: Date.now() });
-  await chrome.storage.local.set({ [STORAGE_KEY]: list });
+  await chrome.storage.sync.set({ [STORAGE_KEY]: list });
 }
 
 export async function removeBlockedChannel(pattern: string): Promise<void> {
   const target = pattern.trim();
   const list = await getBlockedChannels();
   const next = list.filter((c) => c.pattern.trim() !== target);
-  await chrome.storage.local.set({ [STORAGE_KEY]: next });
+  await chrome.storage.sync.set({ [STORAGE_KEY]: next });
 }
 
 export function onBlockedChannelsChanged(
   callback: (channels: BlockedChannel[]) => void,
 ): void {
   chrome.storage.onChanged.addListener((changes, area) => {
-    if (area === "local" && changes[STORAGE_KEY]) {
+    if (area === "sync" && changes[STORAGE_KEY]) {
       const next = changes[STORAGE_KEY].newValue;
       callback(Array.isArray(next) ? (next as BlockedChannel[]) : []);
     }

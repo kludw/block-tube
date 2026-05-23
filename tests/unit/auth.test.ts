@@ -7,7 +7,7 @@ describe("getAuthState", () => {
   });
 
   it("returns the stored state when valid", async () => {
-    globalThis.__mockStorage.data["authState"] = {
+    globalThis.__mockStorage.local.data["authState"] = {
       signedIn: true,
       email: "a@b.com",
     };
@@ -18,7 +18,7 @@ describe("getAuthState", () => {
   });
 
   it("falls back to signed-out when stored value is malformed", async () => {
-    globalThis.__mockStorage.data["authState"] = "not an object";
+    globalThis.__mockStorage.local.data["authState"] = "not an object";
     expect(await getAuthState()).toEqual({ signedIn: false });
   });
 });
@@ -28,7 +28,7 @@ describe("signIn", () => {
     const state = await signIn();
     expect(state.signedIn).toBe(true);
     expect(state.email).toBe("test@example.com");
-    expect(globalThis.__mockStorage.data["authState"]).toEqual(state);
+    expect(globalThis.__mockStorage.local.data["authState"]).toEqual(state);
 
     expect(chrome.identity.getAuthToken).toHaveBeenCalledWith(
       { interactive: true },
@@ -40,7 +40,7 @@ describe("signIn", () => {
     globalThis.__mockIdentity.nextToken = undefined;
     const state = await signIn();
     expect(state).toEqual({ signedIn: false });
-    expect(globalThis.__mockStorage.data["authState"]).toBeUndefined();
+    expect(globalThis.__mockStorage.local.data["authState"]).toBeUndefined();
   });
 
   it("still signs in when userinfo lookup fails", async () => {
@@ -57,7 +57,7 @@ describe("signOut", () => {
   it("clears the cached token and the persisted state", async () => {
     await signIn();
     await signOut();
-    expect(globalThis.__mockStorage.data["authState"]).toEqual({
+    expect(globalThis.__mockStorage.local.data["authState"]).toEqual({
       signedIn: false,
     });
     expect(globalThis.__mockIdentity.removed).toContain("test-token");
@@ -66,7 +66,7 @@ describe("signOut", () => {
   it("is safe to call when not signed in", async () => {
     globalThis.__mockIdentity.nextToken = undefined;
     await signOut();
-    expect(globalThis.__mockStorage.data["authState"]).toEqual({
+    expect(globalThis.__mockStorage.local.data["authState"]).toEqual({
       signedIn: false,
     });
   });

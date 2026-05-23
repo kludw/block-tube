@@ -1,6 +1,7 @@
 import { modules } from "@/modules/registry";
 import { getSettings, onSettingsChanged } from "@/shared/settings";
 import { getAuthState, onAuthChanged } from "@/shared/auth";
+import { onBlockedChannelsChanged } from "@/modules/channels/blocked-channels";
 
 async function applyEnabledModules(): Promise<void> {
   const auth = await getAuthState();
@@ -26,3 +27,4 @@ void applyEnabledModules();
 
 onSettingsChanged(() => window.location.reload());
 onAuthChanged(() => window.location.reload());
+onBlockedChannelsChanged(() => window.location.reload());

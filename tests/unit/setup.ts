@@ -5,17 +5,24 @@ type ChangeListener = (
   area: string,
 ) => void;
 
-interface MockStorage {
+interface MockStorageArea {
   data: Record<string, unknown>;
+}
+
+interface MockStorage {
+  local: MockStorageArea;
+  sync: MockStorageArea;
   listeners: ChangeListener[];
   reset(): void;
 }
 
 const mockStorage: MockStorage = {
-  data: {},
+  local: { data: {} },
+  sync: { data: {} },
   listeners: [],
   reset() {
-    this.data = {};
+    this.local.data = {};
+    this.sync.data = {};
     this.listeners = [];
   },
 };
@@ -40,34 +47,52 @@ const mockIdentity: IdentityMock = {
 
 let lastError: { message: string } | undefined;
 
+function makeArea(area: MockStorageArea, name: "local" | "sync") {
+  return {
+    get: vi.fn(async (key?: string | string[]) => {
+      if (key === undefined) return { ...area.data };
+      if (typeof key === "string") {
+        return key in area.data ? { [key]: area.data[key] } : {};
+      }
+      const out: Record<string, unknown> = {};
+      for (const k of key) {
+        if (k in area.data) out[k] = area.data[k];
+      }
+      return out;
+    }),
+    set: vi.fn(async (obj: Record<string, unknown>) => {
+      const changes: Record<
+        string,
+        { newValue?: unknown; oldValue?: unknown }
+      > = {};
+      for (const k of Object.keys(obj)) {
+        changes[k] = { newValue: obj[k], oldValue: area.data[k] };
+        area.data[k] = obj[k];
+      }
+      for (const cb of mockStorage.listeners) cb(changes, name);
+    }),
+    remove: vi.fn(async (keys: string | string[]) => {
+      const list = typeof keys === "string" ? [keys] : keys;
+      const changes: Record<
+        string,
+        { newValue?: unknown; oldValue?: unknown }
+      > = {};
+      for (const k of list) {
+        if (k in area.data) {
+          changes[k] = { newValue: undefined, oldValue: area.data[k] };
+          delete area.data[k];
+        }
+      }
+      if (Object.keys(changes).length === 0) return;
+      for (const cb of mockStorage.listeners) cb(changes, name);
+    }),
+  };
+}
+
 const chromeMock = {
   storage: {
-    local: {
-      get: vi.fn(async (key?: string | string[]) => {
-        if (key === undefined) return { ...mockStorage.data };
-        if (typeof key === "string") {
-          return key in mockStorage.data
-            ? { [key]: mockStorage.data[key] }
-            : {};
-        }
-        const out: Record<string, unknown> = {};
-        for (const k of key) {
-          if (k in mockStorage.data) out[k] = mockStorage.data[k];
-        }
-        return out;
-      }),
-      set: vi.fn(async (obj: Record<string, unknown>) => {
-        const changes: Record<
-          string,
-          { newValue?: unknown; oldValue?: unknown }
-        > = {};
-        for (const k of Object.keys(obj)) {
-          changes[k] = { newValue: obj[k], oldValue: mockStorage.data[k] };
-          mockStorage.data[k] = obj[k];
-        }
-        for (const cb of mockStorage.listeners) cb(changes, "local");
-      }),
-    },
+    local: makeArea(mockStorage.local, "local"),
+    sync: makeArea(mockStorage.sync, "sync"),
     onChanged: {
       addListener: vi.fn((cb: ChangeListener) => {
         mockStorage.listeners.push(cb);

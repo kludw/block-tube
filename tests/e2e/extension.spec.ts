@@ -16,7 +16,7 @@ test("seedDefaults runs on install and populates moduleSettings", async ({
   const settings = await serviceWorker.evaluate<unknown>(async () => {
     const deadline = Date.now() + 2000;
     while (Date.now() < deadline) {
-      const stored = await chrome.storage.local.get("moduleSettings");
+      const stored = await chrome.storage.sync.get("moduleSettings");
       if (stored["moduleSettings"]) return stored["moduleSettings"];
       await new Promise((r) => setTimeout(r, 50));
     }
@@ -24,7 +24,7 @@ test("seedDefaults runs on install and populates moduleSettings", async ({
   });
 
   expect(settings).toMatchObject({
-    shorts: { enabled: true },
-    channels: { enabled: true },
+    shorts: { enabled: false },
+    channels: { enabled: false },
   });
 });

@@ -5,7 +5,7 @@ export const channelsModule: ExtensionModule = {
   id: "channels",
   name: "Channel Blocker",
   description: "Hides videos from channels you block",
-  defaultEnabled: true,
+  defaultEnabled: false,
   renderSettings(container) {
     return renderChannelSettings(container);
   },

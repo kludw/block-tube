@@ -101,7 +101,8 @@ export const shortsModule: ExtensionModule = {
   id: "shorts",
   name: "Shorts Blocker",
   description: "Removes YouTube Shorts and redirects /shorts URLs.",
-  defaultEnabled: true,
+  defaultEnabled: false,
+  redirectPaths: ["/shorts"],
   run() {
     injectCSS(SHORTS_CSS);
 

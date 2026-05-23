@@ -24,15 +24,15 @@ function postPatterns(patterns: CompiledPattern[] | undefined): void {
 }
 
 async function getChannelsModuleEnabled(): Promise<boolean> {
-  const stored = await chrome.storage.local.get("moduleSettings");
+  const stored = await chrome.storage.sync.get("moduleSettings");
   const settings = stored["moduleSettings"] as
     | Record<string, { enabled?: boolean }>
     | undefined;
-  return settings?.["channels"]?.enabled ?? true;
+  return settings?.["channels"]?.enabled ?? false;
 }
 
 async function getBlockedChannelsRaw(): Promise<BlockedChannel[]> {
-  const stored = await chrome.storage.local.get("blockedChannels");
+  const stored = await chrome.storage.sync.get("blockedChannels");
   const list = stored["blockedChannels"];
   return Array.isArray(list) ? (list as BlockedChannel[]) : [];
 }
@@ -87,12 +87,13 @@ window.addEventListener(
 );
 
 chrome.storage.onChanged.addListener((changes, area) => {
-  if (area !== "local") return;
-  if (
-    changes["blockedChannels"] ||
-    changes["moduleSettings"] ||
-    changes["authState"]
-  ) {
+  if (area === "sync") {
+    if (changes["blockedChannels"] || changes["moduleSettings"]) {
+      void pushCurrentState();
+    }
+    return;
+  }
+  if (area === "local" && changes["authState"]) {
     void pushCurrentState();
   }
 });

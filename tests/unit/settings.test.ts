@@ -24,16 +24,16 @@ describe("getSettings", () => {
   });
 
   it("merges stored state over defaults", async () => {
-    globalThis.__mockStorage.data["moduleSettings"] = {
-      shorts: { enabled: false },
+    globalThis.__mockStorage.sync.data["moduleSettings"] = {
+      shorts: { enabled: true },
     };
     const settings = await getSettings();
-    expect(settings.shorts.enabled).toBe(false);
-    expect(settings.channels.enabled).toBe(true);
+    expect(settings.shorts.enabled).toBe(true);
+    expect(settings.channels.enabled).toBe(false);
   });
 
   it("ignores unknown module ids in stored state", async () => {
-    globalThis.__mockStorage.data["moduleSettings"] = {
+    globalThis.__mockStorage.sync.data["moduleSettings"] = {
       shorts: { enabled: false },
       ghostModule: { enabled: true },
     };
@@ -45,10 +45,10 @@ describe("getSettings", () => {
 describe("updateModuleState", () => {
   it("patches a single module without touching the others", async () => {
     await seedDefaults();
-    await updateModuleState("shorts", { enabled: false });
+    await updateModuleState("shorts", { enabled: true });
     const settings = await getSettings();
-    expect(settings.shorts.enabled).toBe(false);
-    expect(settings.channels.enabled).toBe(true);
+    expect(settings.shorts.enabled).toBe(true);
+    expect(settings.channels.enabled).toBe(false);
   });
 
   it("is a no-op for unknown module ids", async () => {
@@ -62,7 +62,7 @@ describe("updateModuleState", () => {
 describe("seedDefaults", () => {
   it("persists default settings", async () => {
     await seedDefaults();
-    expect(globalThis.__mockStorage.data["moduleSettings"]).toEqual(
+    expect(globalThis.__mockStorage.sync.data["moduleSettings"]).toEqual(
       defaultSettings(),
     );
   });
@@ -80,7 +80,14 @@ describe("onSettingsChanged", () => {
   it("ignores unrelated storage changes", async () => {
     const cb = vi.fn();
     onSettingsChanged(cb);
-    await chrome.storage.local.set({ unrelated: 1 });
+    await chrome.storage.sync.set({ unrelated: 1 });
+    expect(cb).not.toHaveBeenCalled();
+  });
+
+  it("ignores changes in the local area", async () => {
+    const cb = vi.fn();
+    onSettingsChanged(cb);
+    await chrome.storage.local.set({ moduleSettings: { shorts: {} } });
     expect(cb).not.toHaveBeenCalled();
   });
 });

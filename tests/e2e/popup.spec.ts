@@ -20,16 +20,16 @@ test.describe("popup UI", () => {
     const shortsSwitch = page.getByRole("switch", {
       name: /Enable or disable Shorts Blocker/i,
     });
-    await expect(shortsSwitch).toHaveAttribute("aria-checked", "true");
-    await shortsSwitch.click();
     await expect(shortsSwitch).toHaveAttribute("aria-checked", "false");
+    await shortsSwitch.click();
+    await expect(shortsSwitch).toHaveAttribute("aria-checked", "true");
 
     const stored = await serviceWorker.evaluate(async () => {
-      const r = await chrome.storage.local.get("moduleSettings");
+      const r = await chrome.storage.sync.get("moduleSettings");
       return r["moduleSettings"] as Record<string, { enabled: boolean }>;
     });
-    expect(stored.shorts.enabled).toBe(false);
-    expect(stored.channels.enabled).toBe(true);
+    expect(stored.shorts.enabled).toBe(true);
+    expect(stored.channels.enabled).toBe(false);
   });
 
   test("cog opens the Channel Blocker settings modal", async ({

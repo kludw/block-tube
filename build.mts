@@ -41,6 +41,12 @@ const entries = [
     ...shared,
   },
   {
+    entryPoints: ["src/content/redirect.ts"],
+    outfile: `${OUT}/redirect.js`,
+    format: "iife" as const,
+    ...shared,
+  },
+  {
     entryPoints: ["src/popup/popup.ts"],
     outfile: `${OUT}/popup/popup.js`,
     format: "iife" as const,

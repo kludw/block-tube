@@ -18,7 +18,7 @@ export function defaultSettings(): SettingsMap {
 }
 
 export async function getSettings(): Promise<SettingsMap> {
-  const stored = await chrome.storage.local.get(STORAGE_KEY);
+  const stored = await chrome.storage.sync.get(STORAGE_KEY);
   const saved = (stored[STORAGE_KEY] ?? {}) as Partial<SettingsMap>;
 
   const merged = defaultSettings();
@@ -38,18 +38,18 @@ export async function updateModuleState(
   const settings = await getSettings();
   if (!settings[id]) return;
   settings[id] = { ...settings[id], ...patch };
-  await chrome.storage.local.set({ [STORAGE_KEY]: settings });
+  await chrome.storage.sync.set({ [STORAGE_KEY]: settings });
 }
 
 export async function seedDefaults(): Promise<void> {
-  await chrome.storage.local.set({ [STORAGE_KEY]: defaultSettings() });
+  await chrome.storage.sync.set({ [STORAGE_KEY]: defaultSettings() });
 }
 
 export function onSettingsChanged(
   callback: (settings: SettingsMap) => void,
 ): void {
   chrome.storage.onChanged.addListener((changes, area) => {
-    if (area === "local" && changes[STORAGE_KEY]) {
+    if (area === "sync" && changes[STORAGE_KEY]) {
       const next = (changes[STORAGE_KEY].newValue ??
         defaultSettings()) as SettingsMap;
       callback(next);
