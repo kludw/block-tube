@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAlIq6krmGSIKOVVqVDeDNEUJp6Gp+llNZWuWxIx8brzjrpDVXuVSjg6Q8c2gipIFE5BTtTXhtf3mlDtp2dBVHUO0YP0YLE2JQUfBUTnzr6bTH5pnDYwsYVtjP6wyCnAU6HZmosQzBrZWYzcmsCuzb+YNBBjN+hrf4XAoGn/dLHnh5kfb01DDLEtOcKFKVGMSi2pmTF1CJe6nw9/y8j6o2X7ayeZBuAwxzO17YmIcbMpqdxnVgg8CTQkeaWflOVWbTJcLAol5EIi5nVd7AZ2oPu4jwm2er3+5opjkAiQZAHDJiR+6oviKZrBWyB16+umuzcX8SkiPBmnDQwQlj/MmMpwIDAQAB",
   "name": "BlockTube",
-  "version": "1.5.0",
+  "version": "1.7.0",
   "description": "YouTube helper extension",
   "minimum_chrome_version": "111",
   "icons": {
