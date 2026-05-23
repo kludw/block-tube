@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "BlockTube",
   "version": "1.8.0",
-  "description": "YouTube helper extension",
+  "description": "Hide YouTube Shorts, the Playables shelf, and videos from channels you choose to block. Settings sync across devices.",
   "minimum_chrome_version": "111",
   "icons": {
     "128": "icons/icon128.png"
@@ -10,7 +10,7 @@
   "action": {
     "default_icon": "icons/icon128.png",
     "default_popup": "popup/popup.html",
-    "default_title": "Remove YouTube Shorts",
+    "default_title": "BlockTube",
     "theme_icons": [
       {
         "light": "icons/icon128-light.png",
